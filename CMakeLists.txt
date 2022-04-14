@@ -12,7 +12,8 @@ include(FindPkgConfig)
 
 ###
 
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake/Modules")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/Modules")
+message("${CMAKE_MODULE_PATH}")
 include(GNUInstallDirs)
 include(GenerateExportHeader)
 include(CMakePackageConfigHelpers)
@@ -131,9 +132,9 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 list(APPEND qtkeychain_LIBRARIES ${QTCORE_LIBRARIES})
 set(qtkeychain_SOURCES
-    keychain.cpp
+    src/keychain.cpp
     qkeychain_export.h
-    keychain.h
+    include/keychain.h
 )
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
@@ -150,10 +151,10 @@ else()
 endif()
 
 if(WIN32)
-    list(APPEND qtkeychain_SOURCES keychain_win.cpp)
+    list(APPEND qtkeychain_SOURCES src/keychain_win.cpp)
     if (NOT USE_CREDENTIAL_STORE)
         list(APPEND qtkeychain_LIBRARIES crypt32)
-        list(APPEND qtkeychain_SOURCES plaintextstore.cpp)
+        list(APPEND qtkeychain_SOURCES src/plaintextstore.cpp)
     endif()
     #FIXME: mingw bug; otherwise getting undefined refs to RtlSecureZeroMemory there
     if(MINGW)
@@ -162,12 +163,12 @@ if(WIN32)
 endif()
 
 if(APPLE)
-    list(APPEND qtkeychain_SOURCES keychain_apple.mm)
+    list(APPEND qtkeychain_SOURCES src/keychain_apple.mm)
     list(APPEND qtkeychain_LIBRARIES "-framework Foundation" "-framework Security")
 endif()
 
 if(HAIKU)
-    list(APPEND qtkeychain_SOURCES keychain_haiku.cpp)
+    list(APPEND qtkeychain_SOURCES src/keychain_haiku.cpp)
 
     find_library(BE_LIBRARY be REQUIRED)
     list(APPEND qtkeychain_LIBRARIES ${BE_LIBRARY})
@@ -185,17 +186,17 @@ if(UNIX AND NOT APPLE AND NOT ANDROID AND NOT HAIKU)
     endif()
 
     add_definitions(-DKEYCHAIN_DBUS=1)
-    list(APPEND qtkeychain_SOURCES keychain_unix.cpp gnomekeyring.cpp libsecret.cpp plaintextstore.cpp)
+    list(APPEND qtkeychain_SOURCES src/keychain_unix.cpp src/gnomekeyring.cpp src/libsecret.cpp src/plaintextstore.cpp)
     qt_add_dbus_interface(qtkeychain_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/org.kde.KWallet.xml kwallet_interface KWalletInterface)
     list(APPEND qtkeychain_LIBRARIES ${QTDBUS_LIBRARIES} )
 endif()
 
 if(ANDROID)
-    list(APPEND qtkeychain_SOURCES keychain_android.cpp androidkeystore.cpp plaintextstore.cpp)
+    list(APPEND qtkeychain_SOURCES src/keychain_android.cpp src/androidkeystore.cpp src/plaintextstore.cpp)
     list(APPEND qtkeychain_LIBRARIES_PRIVATE ${QTANDROIDEXTRAS_LIBRARIES} )
 endif()
 
-QT_WRAP_CPP(qtkeychain_MOC_OUTFILES keychain.h keychain_p.h gnomekeyring_p.h)
+QT_WRAP_CPP(qtkeychain_MOC_OUTFILES include/keychain.h include/keychain_p.h include/gnomekeyring_p.h)
 
 set(qtkeychain_TR_FILES
       translations/qtkeychain_de.ts
@@ -211,7 +212,7 @@ if(WIN32)
     set_target_properties( ${QTKEYCHAIN_TARGET_NAME} PROPERTIES DEBUG_POSTFIX "d" )
 endif()
 
-file(GLOB qtkeychain_TR_SOURCES *.cpp *.h *.ui)
+file(GLOB qtkeychain_TR_SOURCES include/*.h src/*.cpp src/*.h src/*.ui)
 if ( BUILD_TRANSLATIONS )
     qt_create_translation(qtkeychain_MESSAGES ${qtkeychain_TR_SOURCES} ${qtkeychain_TR_FILES})
     qt_add_translation(qtkeychain_QM_FILES ${qtkeychain_TR_FILES})
@@ -279,7 +280,7 @@ install(TARGETS ${QTKEYCHAIN_TARGET_NAME}
 )
 
 if(BUILD_TEST_APPLICATION)
-    add_executable( testclient testclient.cpp )
+    add_executable( testclient src/testclient.cpp )
     target_link_libraries( testclient ${QTKEYCHAIN_TARGET_NAME})
 endif()
 
