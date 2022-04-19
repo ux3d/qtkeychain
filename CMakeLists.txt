@@ -247,11 +247,13 @@ if ( BUILD_TRANSLATIONS )
     endif()
 endif( BUILD_TRANSLATIONS )
 
+target_link_libraries(${QTKEYCHAIN_TARGET_NAME} PUBLIC Qt5::Core)
 target_link_libraries(${QTKEYCHAIN_TARGET_NAME} PUBLIC ${qtkeychain_LIBRARIES} PRIVATE ${qtkeychain_LIBRARIES_PRIVATE})
 if(NOT INTERFACE_INCLUDE_SUFFIX)
     set(INTERFACE_INCLUDE_SUFFIX include)
 endif()
 target_include_directories(${QTKEYCHAIN_TARGET_NAME} PUBLIC $<INSTALL_INTERFACE:${INTERFACE_INCLUDE_SUFFIX}/>)
+target_include_directories(${QTKEYCHAIN_TARGET_NAME} PRIVATE "include")
 
 generate_export_header(${QTKEYCHAIN_TARGET_NAME}
   EXPORT_FILE_NAME qkeychain_export.h
