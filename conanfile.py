@@ -22,7 +22,7 @@ class QtkeychainConan(ConanFile):
     exports_sources = "CMakeLists.txt", "src/*", "include/*", "cmake/Modules/*.cmake"
 
     requires = "qt/5.15.3"
-    generators = "cmake_find_package"
+    generators = "cmake_find_package_multi", "cmake_paths"
 
     def config_options(self):
         if self.settings.os == "Windows":

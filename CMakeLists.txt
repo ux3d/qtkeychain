@@ -10,6 +10,8 @@ SET(CMAKE_CXX_STANDARD 11)
 
 include(FindPkgConfig)
 
+include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
+
 ###
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/Modules")
@@ -52,7 +54,7 @@ if( NOT BUILD_WITH_QT6 )
     find_package(Qt5 COMPONENTS Core REQUIRED)
 endif()
 
-if (Qt5Core_FOUND AND NOT BUILD_WITH_QT6)
+if (Qt5_FOUND AND NOT BUILD_WITH_QT6)
   set(QTKEYCHAIN_VERSION_INFIX 5)
 
   if(ANDROID)
@@ -196,7 +198,7 @@ if(ANDROID)
     list(APPEND qtkeychain_LIBRARIES_PRIVATE ${QTANDROIDEXTRAS_LIBRARIES} )
 endif()
 
-QT_WRAP_CPP(qtkeychain_MOC_OUTFILES include/keychain.h include/keychain_p.h include/gnomekeyring_p.h)
+QT_WRAP_CPP(qtkeychain_MOC_OUTFILES include/keychain.h src/keychain_p.h src/gnomekeyring_p.h)
 
 set(qtkeychain_TR_FILES
       translations/qtkeychain_de.ts
