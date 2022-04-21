@@ -211,6 +211,14 @@ if(WIN32)
     set_target_properties( ${QTKEYCHAIN_TARGET_NAME} PROPERTIES DEBUG_POSTFIX "d" )
 endif()
 
+if (APPLE AND BUILD_FRAMEWORK)
+  set_target_properties(${QTKEYCHAIN_TARGET_NAME} PROPERTIES
+    FRAMEWORK TRUE
+    VERSION ${QTKEYCHAIN_VERSION}
+    SOVERSION ${QTKEYCHAIN_SOVERSION}
+  )
+endif()
+
 file(GLOB qtkeychain_TR_SOURCES *.cpp *.h *.ui)
 if ( BUILD_TRANSLATIONS )
     qt_create_translation(qtkeychain_MESSAGES ${qtkeychain_TR_SOURCES} ${qtkeychain_TR_FILES})
