@@ -272,7 +272,7 @@ target_link_libraries(${QTKEYCHAIN_TARGET_NAME} PUBLIC ${qtkeychain_LIBRARIES} P
 if(NOT INTERFACE_INCLUDE_SUFFIX)
     set(INTERFACE_INCLUDE_SUFFIX include)
 endif()
-target_include_directories(${QTKEYCHAIN_TARGET_NAME} PUBLIC "include")
+target_include_directories(${QTKEYCHAIN_TARGET_NAME} PUBLIC "include" PRIVATE "src")
 set_target_properties(${QTKEYCHAIN_TARGET_NAME} PROPERTIES PUBLIC_HEADER "include/keychain.h")
 
 set_target_properties(${QTKEYCHAIN_TARGET_NAME} PROPERTIES
