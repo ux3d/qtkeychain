@@ -271,7 +271,7 @@ target_link_libraries(${QTKEYCHAIN_TARGET_NAME} PUBLIC ${qtkeychain_LIBRARIES} P
 if(NOT INTERFACE_INCLUDE_SUFFIX)
     set(INTERFACE_INCLUDE_SUFFIX include)
 endif()
-target_include_directories(${QTKEYCHAIN_TARGET_NAME} PUBLIC $<INSTALL_INTERFACE:${INTERFACE_INCLUDE_SUFFIX}/>)
+target_include_directories(${QTKEYCHAIN_TARGET_NAME} PUBLIC ".")
 set_target_properties(${QTKEYCHAIN_TARGET_NAME} PROPERTIES PUBLIC_HEADER "keychain.h")
 
 generate_export_header(${QTKEYCHAIN_TARGET_NAME}
