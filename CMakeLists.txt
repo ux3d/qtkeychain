@@ -135,7 +135,6 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 list(APPEND qtkeychain_LIBRARIES ${QTCORE_LIBRARIES})
 set(qtkeychain_SOURCES
     src/keychain.cpp
-    qkeychain_export.h
     include/keychain.h
 )
 
@@ -272,8 +271,8 @@ target_link_libraries(${QTKEYCHAIN_TARGET_NAME} PUBLIC ${qtkeychain_LIBRARIES} P
 if(NOT INTERFACE_INCLUDE_SUFFIX)
     set(INTERFACE_INCLUDE_SUFFIX include)
 endif()
-target_include_directories(${QTKEYCHAIN_TARGET_NAME} PUBLIC "include" PRIVATE "src")
-set_target_properties(${QTKEYCHAIN_TARGET_NAME} PROPERTIES PUBLIC_HEADER "include/keychain.h")
+target_include_directories(${QTKEYCHAIN_TARGET_NAME} PUBLIC "include" "${PROJECT_BINARY_DIR}/include" PRIVATE "src")
+set_target_properties(${QTKEYCHAIN_TARGET_NAME} PROPERTIES PUBLIC_HEADER "include/keychain.h" "${PROJECT_BINARY_DIR}/include/keychain_export.h")
 
 generate_export_header(${QTKEYCHAIN_TARGET_NAME}
   EXPORT_FILE_NAME "include/qkeychain_export.h"
