@@ -275,6 +275,11 @@ endif()
 target_include_directories(${QTKEYCHAIN_TARGET_NAME} PUBLIC "include" PRIVATE "src")
 set_target_properties(${QTKEYCHAIN_TARGET_NAME} PROPERTIES PUBLIC_HEADER "include/keychain.h")
 
+generate_export_header(${QTKEYCHAIN_TARGET_NAME}
+  EXPORT_FILE_NAME "include/qkeychain_export.h"
+  EXPORT_MACRO_NAME QKEYCHAIN_EXPORT
+)
+
 set_target_properties(${QTKEYCHAIN_TARGET_NAME} PROPERTIES
     VERSION ${QTKEYCHAIN_VERSION}
     SOVERSION ${QTKEYCHAIN_SOVERSION}
