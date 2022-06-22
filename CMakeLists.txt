@@ -198,7 +198,7 @@ if(ANDROID)
     list(APPEND qtkeychain_LIBRARIES_PRIVATE ${QTANDROIDEXTRAS_LIBRARIES} )
 endif()
 
-QT_WRAP_CPP(qtkeychain_MOC_OUTFILES include/keychain.h include/keychain_p.h include/gnomekeyring_p.h)
+QT_WRAP_CPP(qtkeychain_MOC_OUTFILES include/keychain.h src/keychain_p.h src/gnomekeyring_p.h)
 
 set(qtkeychain_TR_FILES
       translations/qtkeychain_de.ts
